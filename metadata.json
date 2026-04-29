@@ -1,5 +1,6 @@
 {
   "owner": "google-github-actions",
   "name": "setup-gcloud",
-  "visibility": ""
+  "visibility": "internal",
+  "description": "A GitHub Action for installing and configuring the gcloud CLI."
 }

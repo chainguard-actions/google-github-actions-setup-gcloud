@@ -1,5 +1,7 @@
 # google-github-actions/setup-gcloud
 
+A GitHub Action for installing and configuring the gcloud CLI.
+
 Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at [https://github.com/google-github-actions/setup-gcloud](https://github.com/google-github-actions/setup-gcloud).
 
 ## Versions
