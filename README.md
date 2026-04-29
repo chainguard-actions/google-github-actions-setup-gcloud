@@ -1,6 +1,12 @@
 # google-github-actions/setup-gcloud
 
-Hardened GitHub Action by [Chainguard](https://www.chainguard.dev).
+Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at [https://github.com/google-github-actions/setup-gcloud](https://github.com/google-github-actions/setup-gcloud).
+
+## Versions
+
+| Version | Tag | Upstream commit |
+|---------|-----|-----------------|
+| v3.0.1 | [`v3.0.1`](https://github.com/chainguard-actions/setup-gcloud/tree/v3.0.1) | — |
 
 ## Privacy
 
