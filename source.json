@@ -1,4 +1,6 @@
 {
-  "upstream": "google-github-actions/setup-gcloud",
-  "version": "v3.0.1"
+  "owner": "google-github-actions",
+  "repo": "setup-gcloud",
+  "version": "",
+  "url": "https://github.com/google-github-actions/setup-gcloud"
 }
