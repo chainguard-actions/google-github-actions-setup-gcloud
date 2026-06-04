@@ -1,4 +1,4 @@
-name: Test setup-gcloud with project_id
+name: Test gcloud setup with project_id
 on:
   workflow_dispatch:
 jobs:
@@ -13,25 +13,29 @@ jobs:
           project_id: 'my-test-project'
       - name: Assert gcloud is available
         run: |
-          which gcloud
-          echo "gcloud found at: $(which gcloud)"
-          echo "PASS: gcloud is in PATH"
+          echo "gcloud version output:"
+          gcloud version
+          if ! command -v gcloud &> /dev/null; then
+            echo "FAIL: gcloud command not found in PATH"
+            exit 1
+          fi
+          echo "PASS: gcloud is available"
       - name: Assert version output is set
         env:
           ACTUAL: ${{ steps.setup.outputs.version }}
         run: |
           echo "actual version: $ACTUAL"
           if [ -z "$ACTUAL" ]; then
-            echo "FAIL: expected version output to be non-empty"
+            echo "FAIL: version output is empty"
             exit 1
           fi
           echo "PASS: version output is '$ACTUAL'"
-      - name: Assert gcloud project is configured
+      - name: Assert project is configured
         run: |
-          PROJECT=$(gcloud config get-value project 2>/dev/null || true)
+          PROJECT=$(gcloud config get-value project 2>/dev/null)
           echo "configured project: $PROJECT"
           if [ "$PROJECT" != "my-test-project" ]; then
             echo "FAIL: expected project 'my-test-project', got '$PROJECT'"
             exit 1
           fi
-          echo "PASS: project is correctly set to '$PROJECT'"
+          echo "PASS: project is set to '$PROJECT'"
