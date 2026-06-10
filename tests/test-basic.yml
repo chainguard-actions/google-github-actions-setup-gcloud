@@ -1,4 +1,4 @@
-name: Test basic gcloud setup
+name: Test basic setup-gcloud usage
 on:
   workflow_dispatch:
 jobs:
@@ -10,15 +10,11 @@ jobs:
         uses: .
         with:
           version: 'latest'
-      - name: Assert gcloud is available
+      - name: Assert gcloud is installed
         run: |
-          echo "gcloud version output:"
-          gcloud version
-          if ! command -v gcloud &> /dev/null; then
-            echo "FAIL: gcloud command not found in PATH"
-            exit 1
-          fi
-          echo "PASS: gcloud is available"
+          echo "Checking gcloud is available in PATH..."
+          which gcloud || { echo "FAIL: gcloud not found in PATH"; exit 1; }
+          echo "PASS: gcloud found"
       - name: Assert version output is set
         env:
           ACTUAL: ${{ steps.setup.outputs.version }}
@@ -29,3 +25,7 @@ jobs:
             exit 1
           fi
           echo "PASS: version output is '$ACTUAL'"
+      - name: Assert gcloud version command works
+        run: |
+          gcloud version
+          echo "PASS: gcloud version command succeeded"

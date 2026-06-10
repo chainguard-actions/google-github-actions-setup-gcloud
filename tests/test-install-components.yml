@@ -1,4 +1,4 @@
-name: Test gcloud setup with install_components
+name: Test setup-gcloud with install_components
 on:
   workflow_dispatch:
 jobs:
@@ -11,15 +11,11 @@ jobs:
         with:
           version: 'latest'
           install_components: 'alpha'
-      - name: Assert gcloud is available
+      - name: Assert gcloud is installed
         run: |
-          echo "gcloud version output:"
-          gcloud version
-          if ! command -v gcloud &> /dev/null; then
-            echo "FAIL: gcloud command not found in PATH"
-            exit 1
-          fi
-          echo "PASS: gcloud is available"
+          echo "Checking gcloud is available in PATH..."
+          which gcloud || { echo "FAIL: gcloud not found in PATH"; exit 1; }
+          echo "PASS: gcloud found"
       - name: Assert version output is set
         env:
           ACTUAL: ${{ steps.setup.outputs.version }}
@@ -32,9 +28,9 @@ jobs:
           echo "PASS: version output is '$ACTUAL'"
       - name: Assert alpha component is installed
         run: |
-          echo "Checking gcloud alpha component:"
-          if ! gcloud alpha --help &> /dev/null; then
-            echo "FAIL: gcloud alpha component not found"
+          echo "Checking gcloud alpha component is available..."
+          gcloud components list --filter="id=alpha AND state.name=Installed" --format="value(id)" 2>/dev/null | grep -q "alpha" || {
+            echo "FAIL: alpha component not found as installed"
             exit 1
-          fi
-          echo "PASS: gcloud alpha component is installed"
+          }
+          echo "PASS: alpha component is installed"
