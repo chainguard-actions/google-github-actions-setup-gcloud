@@ -1,4 +1,4 @@
-name: Test basic gcloud setup (skip_install)
+name: Test gcloud setup with specific version (skip_install)
 on:
   workflow_dispatch:
 jobs:
@@ -8,13 +8,13 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - id: setup
-        name: Set up gcloud (skip_install to avoid network download)
+        name: Set up gcloud with specific version and skip_install
         uses: .
         with:
           skip_install: 'true'
-          version: 'latest'
+          version: '416.0.0'
 
-      - name: Assert version output is set
+      - name: Assert version output matches input
         env:
           VERSION: ${{ steps.setup.outputs.version }}
         run: |
@@ -27,4 +27,4 @@ jobs:
 
       - name: Assert action completed successfully
         run: |
-          echo "PASS: action completed with skip_install=true"
+          echo "PASS: action completed with skip_install=true and specific version"

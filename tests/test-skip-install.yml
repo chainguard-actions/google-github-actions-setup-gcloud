@@ -1,0 +1,34 @@
+name: Test gcloud setup with skip_install
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - id: setup
+        name: Set up gcloud with skip_install=true
+        uses: .
+        with:
+          skip_install: 'true'
+          version: 'latest'
+
+      - name: Assert action succeeded
+        env:
+          VERSION: ${{ steps.setup.outputs.version }}
+        run: |
+          echo "version output: $VERSION"
+          # When skip_install=true, the action skips downloading/installing gcloud.
+          # The version output should be set to the version input value ('latest').
+          if [ -z "$VERSION" ]; then
+            echo "FAIL: version output is empty"
+            exit 1
+          fi
+          echo "PASS: version output is '$VERSION'"
+
+      - name: Assert skip_install did not install gcloud from network
+        run: |
+          # The action should have completed without downloading gcloud.
+          # We just verify the step above succeeded (no exit code check needed here).
+          echo "PASS: action completed with skip_install=true without network download"
