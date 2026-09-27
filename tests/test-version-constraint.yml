@@ -1,0 +1,46 @@
+name: Test version constraint syntax
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: setup
+        uses: .
+        with:
+          version: '>= 363.0.0'
+          skip_tool_cache: 'true'
+      - name: Assert version output is set
+        env:
+          VERSION: ${{ steps.setup.outputs.version }}
+        run: |
+          echo "version: $VERSION"
+          if [ -z "$VERSION" ]; then
+            echo "FAIL: version output is empty"
+            exit 1
+          fi
+          echo "PASS: version output is '$VERSION'"
+      - name: Assert gcloud is on PATH
+        run: |
+          if ! command -v gcloud &>/dev/null; then
+            echo "FAIL: gcloud not found on PATH"
+            exit 1
+          fi
+          echo "PASS: gcloud found at $(command -v gcloud)"
+      - name: Assert gcloud version satisfies constraint
+        run: |
+          # Get the actual installed gcloud version from the binary
+          GCLOUD_VER="$(gcloud version 2>/dev/null | grep 'Google Cloud SDK' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')"
+          echo "installed gcloud version: $GCLOUD_VER"
+          if [ -z "$GCLOUD_VER" ]; then
+            echo "FAIL: could not determine installed gcloud version"
+            exit 1
+          fi
+          MAJOR="$(echo "$GCLOUD_VER" | cut -d. -f1)"
+          echo "major version: $MAJOR"
+          if [ -z "$MAJOR" ] || [ "$MAJOR" -lt 363 ]; then
+            echo "FAIL: expected version >= 363.0.0 but got '$GCLOUD_VER'"
+            exit 1
+          fi
+          echo "PASS: installed version '$GCLOUD_VER' satisfies >= 363.0.0"

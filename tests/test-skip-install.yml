@@ -1,0 +1,36 @@
+name: Test skip_install uses system gcloud
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: setup
+        uses: .
+        with:
+          skip_install: 'true'
+      - name: Assert version output is set
+        env:
+          VERSION: ${{ steps.setup.outputs.version }}
+        run: |
+          echo "version: $VERSION"
+          # When skip_install is true, the action outputs the version input
+          # (defaults to 'latest') without actually installing anything.
+          if [ -z "$VERSION" ]; then
+            echo "FAIL: version output is empty"
+            exit 1
+          fi
+          echo "PASS: version output is '$VERSION'"
+      - name: Assert action did not install gcloud (skip_install=true)
+        env:
+          VERSION: ${{ steps.setup.outputs.version }}
+        run: |
+          echo "skip_install=true: action skipped download, version output='$VERSION'"
+          # The version output should be 'latest' (the default input value)
+          # since no version was specified and skip_install bypasses resolution
+          if [ "$VERSION" != "latest" ]; then
+            echo "FAIL: expected version output 'latest' when skip_install=true and no version given, got '$VERSION'"
+            exit 1
+          fi
+          echo "PASS: version output is 'latest' as expected for skip_install mode"

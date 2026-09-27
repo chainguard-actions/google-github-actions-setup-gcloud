@@ -1,6 +1,11 @@
 {
   "owner": "google-github-actions",
   "repo": "setup-gcloud",
-  "version": "",
-  "url": "https://github.com/google-github-actions/setup-gcloud"
+  "version": "v2.2.1",
+  "commit_sha": "e427ad8a34f8676edf47cf7d7925499adf3eb74f",
+  "url": "https://github.com/google-github-actions/setup-gcloud",
+  "policy_sha": "d636be7e43ef829af6e853da6b3c7566db9f72fe",
+  "test_policy_sha": "843adf9e4b8f85d0c08b27b9d0b09dd094b54702",
+  "test_agent_version": "2",
+  "harden_agent_version": "2"
 }
