@@ -1,0 +1,28 @@
+name: Test gcloud setup with skip_install
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Pre-install gcloud for system availability
+        run: |
+          # Install gcloud so the system has it available when skip_install=true
+          if ! command -v gcloud >/dev/null 2>&1; then
+            curl -sSL https://sdk.cloud.google.com | bash -s -- --disable-prompts --install-dir=/usr/local/google-cloud-sdk-install
+            export PATH="/usr/local/google-cloud-sdk-install/google-cloud-sdk/bin:$PATH"
+            echo "/usr/local/google-cloud-sdk-install/google-cloud-sdk/bin" >> $GITHUB_PATH
+          fi
+      - id: setup
+        uses: .
+        with:
+          skip_install: 'true'
+      - name: Assert gcloud is available
+        run: |
+          if ! command -v gcloud >/dev/null 2>&1; then
+            echo "FAIL: gcloud not found on PATH after skip_install"
+            exit 1
+          fi
+          echo "PASS: gcloud found at $(command -v gcloud)"
+          gcloud --version

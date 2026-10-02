@@ -1,0 +1,38 @@
+name: Test gcloud setup with version constraint
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: setup
+        uses: .
+        with:
+          version: '>= 363.0.0'
+      - name: Assert version output is set
+        env:
+          VERSION: ${{ steps.setup.outputs.version }}
+        run: |
+          echo "version: $VERSION"
+          if [ -z "$VERSION" ]; then
+            echo "FAIL: version output is empty"
+            exit 1
+          fi
+          echo "PASS: version output is '$VERSION'"
+      - name: Assert gcloud version satisfies constraint
+        run: |
+          INSTALLED=$(gcloud --version | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+          echo "installed version: $INSTALLED"
+          MAJOR=$(echo "$INSTALLED" | cut -d. -f1)
+          MINOR=$(echo "$INSTALLED" | cut -d. -f2)
+          PATCH=$(echo "$INSTALLED" | cut -d. -f3)
+          # Check >= 363.0.0
+          if [ "$MAJOR" -gt 363 ]; then
+            echo "PASS: version $INSTALLED >= 363.0.0"
+          elif [ "$MAJOR" -eq 363 ] && [ "$MINOR" -ge 0 ]; then
+            echo "PASS: version $INSTALLED >= 363.0.0"
+          else
+            echo "FAIL: version $INSTALLED does not satisfy >= 363.0.0"
+            exit 1
+          fi

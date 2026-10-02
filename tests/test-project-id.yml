@@ -1,0 +1,39 @@
+name: Test gcloud setup with project_id
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: setup
+        uses: .
+        with:
+          version: 'latest'
+          project_id: 'my-test-project-123'
+      - name: Assert version output is set
+        env:
+          VERSION: ${{ steps.setup.outputs.version }}
+        run: |
+          echo "version: $VERSION"
+          if [ -z "$VERSION" ]; then
+            echo "FAIL: version output is empty"
+            exit 1
+          fi
+          echo "PASS: version output is '$VERSION'"
+      - name: Assert gcloud is on PATH
+        run: |
+          if ! command -v gcloud >/dev/null 2>&1; then
+            echo "FAIL: gcloud not found on PATH"
+            exit 1
+          fi
+          echo "PASS: gcloud found at $(command -v gcloud)"
+      - name: Assert gcloud project is configured
+        run: |
+          PROJECT=$(gcloud config get-value project 2>/dev/null || true)
+          echo "configured project: $PROJECT"
+          if [ "$PROJECT" != "my-test-project-123" ]; then
+            echo "FAIL: expected project 'my-test-project-123' but got '$PROJECT'"
+            exit 1
+          fi
+          echo "PASS: project is correctly configured"
