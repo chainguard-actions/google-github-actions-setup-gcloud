@@ -7,11 +7,11 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 ## Versions
 
-| Version | Tag | Upstream commit |
-|---------|-----|-----------------|
-| v2 | [`v2`](https://github.com/chainguard-actions/google-github-actions-setup-gcloud/tree/v2) | [`e427ad8`](https://github.com/google-github-actions/setup-gcloud/commit/e427ad8a34f8676edf47cf7d7925499adf3eb74f) |
-| v2.2.1 | [`v2.2.1`](https://github.com/chainguard-actions/google-github-actions-setup-gcloud/tree/v2.2.1) | [`e427ad8`](https://github.com/google-github-actions/setup-gcloud/commit/e427ad8a34f8676edf47cf7d7925499adf3eb74f) |
-| v3.0.1 | [`v3.0.1`](https://github.com/chainguard-actions/google-github-actions-setup-gcloud/tree/v3.0.1) | [`aa5489c`](https://github.com/google-github-actions/setup-gcloud/commit/aa5489c8933f4cc7a4f7d45035b3b1440c9c10db) |
+| Version | Tag | Upstream commit | Hardening report |
+|---------|-----|-----------------|------------------|
+| v2 | [`v2`](https://github.com/chainguard-actions/google-github-actions-setup-gcloud/tree/v2) | [`e427ad8`](https://github.com/google-github-actions/setup-gcloud/commit/e427ad8a34f8676edf47cf7d7925499adf3eb74f) | [`HARDENING.md`](https://github.com/chainguard-actions/google-github-actions-setup-gcloud/blob/v2/HARDENING.md) |
+| v2.2.1 | [`v2.2.1`](https://github.com/chainguard-actions/google-github-actions-setup-gcloud/tree/v2.2.1) | [`e427ad8`](https://github.com/google-github-actions/setup-gcloud/commit/e427ad8a34f8676edf47cf7d7925499adf3eb74f) | [`HARDENING.md`](https://github.com/chainguard-actions/google-github-actions-setup-gcloud/blob/v2.2.1/HARDENING.md) |
+| v3.0.1 | [`v3.0.1`](https://github.com/chainguard-actions/google-github-actions-setup-gcloud/tree/v3.0.1) | [`aa5489c`](https://github.com/google-github-actions/setup-gcloud/commit/aa5489c8933f4cc7a4f7d45035b3b1440c9c10db) | [`HARDENING.md`](https://github.com/chainguard-actions/google-github-actions-setup-gcloud/blob/v3.0.1/HARDENING.md) |
 
 ## Privacy
 
